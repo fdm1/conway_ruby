@@ -72,21 +72,18 @@ describe Conway::Grid do
     expect(evolved_grid.points).to include([1,2])
     expect(evolved_grid.points).to include([2,2])
   end
-end
 
-describe Conway::Display do
-  let (:small_grid) { Conway::Grid.new([[0,0],[1,1],[2,2]]) }
-  let (:small_display) { described_class.new(small_grid) }
+  let (:small_grid) { described_class.new([[0,0],[1,1],[2,2]]) }
 
   it "knows the bounds of a grid" do
-    expect(small_display.bottom_left).to eq([0,0])
-    expect(small_display.top_right).to eq([2,2])
+    expect(small_grid.bottom_left).to eq([0,0])
+    expect(small_grid.top_right).to eq([2,2])
   end
 
   it "represents a Grid as a string" do
     rows = [Conway::DEAD_CELL*2 + Conway::LIVE_CELL,
             Conway::DEAD_CELL + Conway::LIVE_CELL + Conway::DEAD_CELL,
             Conway::LIVE_CELL + Conway::DEAD_CELL*2]
-    expect(small_display.to_s).to eq(rows.join("\n"))
+    expect(small_grid.to_s).to eq(rows.join("\n"))
   end
 end

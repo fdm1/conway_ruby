@@ -1,6 +1,10 @@
 require "set"
 
 module Conway
+
+  DEAD_CELL = "."
+  LIVE_CELL = "*"
+
   class Grid
 
     attr_accessor :points
@@ -61,6 +65,34 @@ module Conway
 
     def evolve
       self.class.new(points_to_check.select {|p| point_should_live?(p[0], p[1])})
+    end
+  end
+
+  class Display
+
+    attr_accessor :grid
+
+    def initialize(grid)
+      @grid = grid
+    end
+
+    def bottom_left
+      self.grid.points.sort[0]
+    end
+
+    def top_right
+      self.grid.points.sort[-1]
+    end
+
+    def to_s
+      res = ""
+      top_right[1].downto(bottom_left[1]).each do |y|
+        (bottom_left[0]..top_right[0]).each do |x|
+          res += self.grid.point_is_alive?(x,y) ? Conway::LIVE_CELL : Conway::DEAD_CELL
+        end
+        res += "\n"
+      end
+      res[0...-1]
     end
   end
 end

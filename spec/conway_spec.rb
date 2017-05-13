@@ -71,6 +71,12 @@ describe Conway::Grid do
     expect(evolved_grid.points).to include([0,2])
     expect(evolved_grid.points).to include([1,2])
     expect(evolved_grid.points).to include([2,2])
+
+    evolved_grid = evolved_grid.evolve
+    expect(evolved_grid.points.length).to eq(3)
+    expect(evolved_grid.points).to include([1,1])
+    expect(evolved_grid.points).to include([1,2])
+    expect(evolved_grid.points).to include([1,3])
   end
 
   let (:small_grid) { described_class.new([[0,0],[1,1],[2,2]]) }

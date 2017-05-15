@@ -5,6 +5,22 @@ module Conway
   DEAD_CELL = "."
   LIVE_CELL = "*"
 
+  def self.run
+    rand_points = []
+
+    10000.times do |i|
+      rand_points.push [rand(80), rand(80)]
+    end
+    g = Grid.new(rand_points)
+
+    20.times do
+      system('clear')
+      puts g
+      g = g.evolve
+      sleep(0.1)
+    end
+  end
+
   class Grid
 
     attr_accessor :points
@@ -68,18 +84,22 @@ module Conway
     end
 
     # Methods for displaying
+    def sorted_points
+      points.sort {|a,b| b[1] <=> a[1]}.sort {|a,b| a[0] <=> b[0]}
+    end
+
     def bottom_left
-      self.points.sort[0]
+      sorted_points.first
     end
 
     def top_right
-      self.points.sort[-1]
+      sorted_points.last
     end
 
     def to_s
       res = ""
       top_right[1].downto(bottom_left[1]).each do |y|
-        (bottom_left[0]..top_right[0]).each do |x|
+        bottom_left[0].upto(top_right[0]).each do |x|
           res += self.point_is_alive?(x,y) ? Conway::LIVE_CELL : Conway::DEAD_CELL
         end
         res += "\n"

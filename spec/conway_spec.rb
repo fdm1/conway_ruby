@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe Conway::Grid do
-  let(:sample_grid) { described_class.new([[1,1]]) }
-  let(:single_row_grid) { described_class.new([[1,1], [1,2], [1,3]]) }
-  let(:populated_grid) { described_class.new([[0,1], [1,1],
+  let(:sample_grid) { described_class.new(1, 1, [[1,1]]) }
+  let(:single_row_grid) { described_class.new(3, 3, [[1,1], [1,2], [1,3]]) }
+  let (:small_grid) { described_class.new(2, 2, [[0,0],[1,1],[2,2]]) }
+  let(:populated_grid) { described_class.new(100, 100, [[0,1], [1,1],
                                               [5,4], [5,5], [5,6],
                                               [9,10], [10,9],
                                               [10,10], [10,11],
@@ -79,17 +80,13 @@ describe Conway::Grid do
     expect(evolved_grid.points).to include([1,3])
   end
 
-  let (:small_grid) { described_class.new([[0,0],[1,1],[2,2]]) }
-
-  it "knows the bounds of a grid" do
-    expect(small_grid.bottom_left).to eq([0,0])
-    expect(small_grid.top_right).to eq([2,2])
-  end
-
   it "represents a Grid as a string" do
-    rows = [Conway::DEAD_CELL*2 + Conway::LIVE_CELL,
+    rows = [Conway::DEAD_CELL*3,  # pad top
+            Conway::DEAD_CELL*2 + Conway::LIVE_CELL,
             Conway::DEAD_CELL + Conway::LIVE_CELL + Conway::DEAD_CELL,
-            Conway::LIVE_CELL + Conway::DEAD_CELL*2]
+            Conway::LIVE_CELL + Conway::DEAD_CELL*2,
+            Conway::DEAD_CELL*3]  # pad bottom
+    rows.map! {|r| Conway::DEAD_CELL + r + Conway::DEAD_CELL }  # pad left and right
     expect(small_grid.to_s).to eq(rows.join("\n"))
   end
 end
